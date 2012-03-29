@@ -78,7 +78,7 @@ namespace MyToDoList
             }
 
             model.Save();
-            ShowMessage("File has been saved");
+            //ShowMessage("File has been saved");
         }
 
         /// <summary>
