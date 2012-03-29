@@ -1,0 +1,60 @@
+﻿<Window x:Class="MyToDoList.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:controls="clr-namespace:MyToDoList.Controls"
+        Title="MainWindow" Height="{Binding Height, Mode=TwoWay}" Width="{Binding Width, Mode=TwoWay}" 
+        Left="{Binding X, Mode=TwoWay}" Top="{Binding Y, Mode=TwoWay}"
+        Closing="Window_Closing" Icon="/GTD2;component/kontact-todo.ico"
+        mc:Ignorable="d"
+        d:DesignWidth="800" d:DesignHeight="600" MinHeight="372" MinWidth="400">
+    <Grid>
+        <Border BorderBrush="Silver" BorderThickness="1" Height="100" Margin="12,12,72,0" Name="border2" VerticalAlignment="Top" Background="#FFEBFFEB">
+            <TextBlock Text="Done" TextAlignment="Center" VerticalAlignment="Center" FontSize="56" Foreground="LimeGreen" HorizontalAlignment="Center" />
+        </Border>
+        <Border BorderBrush="Silver" BorderThickness="1" Height="96" Margin="13,118,72,0" Name="border3" VerticalAlignment="Top" Background="Cornsilk">
+            <TextBlock Name="textBlock1" TextAlignment="Center" Text="Today" FontSize="56" Foreground="DarkGoldenrod" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        </Border>
+        <Border BorderBrush="Silver" BorderThickness="1" Margin="14,220,72,12" Name="border1" Background="#FFFFFCF2">
+            <TextBlock Name="textBlock2" TextAlignment="Center" Text="Tomorrow" FontSize="56" Foreground="DarkGray" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Border>
+        
+        <Border Margin="0,12,12,12" Width="54" HorizontalAlignment="Right" Background="#FFF7D7" BorderBrush="#FFFAD163" 
+                BorderThickness="1,3,1,1">
+            <controls:Timeline x:Name="timeline1" />
+        </Border>        
+        
+        <ItemsControl Name="itemsControl1" ItemsSource="{Binding Notes}"
+                      TextOptions.TextFormattingMode="Display" Focusable="True" Margin="14,12,13,12" Background="#00000000" MouseLeftButtonDown="itemsControl1_MouseLeftButtonDown">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <controls:TextNote Text="{Binding Text, Mode=TwoWay}" EditMode="{Binding EditMode, Mode=TwoWay}" LostFocus="TextNote_LostFocus">
+                        <controls:TextNote.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Name="delete" Header="Delete" Click="delete_Click" />
+                            </ContextMenu>
+                        </controls:TextNote.ContextMenu>
+                    </controls:TextNote>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding Path=X, Mode=TwoWay}" />
+                    <Setter Property="Canvas.Top" Value="{Binding Path=Y, Mode=TwoWay}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <controls:DragZCanvas />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+
+        <Border Name="message" HorizontalAlignment="Center" VerticalAlignment="Top" Background="#FFCBFFCB" BorderBrush="{x:Null}"
+                Height="24" Width="200" Visibility="Collapsed">
+            <TextBlock Text="" FontWeight="Medium" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontSize="14" Name="messageText" />
+        </Border>
+    </Grid>
+</Window>
