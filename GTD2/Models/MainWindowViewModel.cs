@@ -6,6 +6,7 @@ using System.Xml;
 using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 using System.Collections.Specialized;
+using MyToDoList.Properties;
 
 namespace MyToDoList.Models
 {
@@ -18,30 +19,6 @@ namespace MyToDoList.Models
         public double Height { get; set; }
         public double X { get; set; }
         public double Y { get; set; }
-
-        /*public byte[] FileContent
-        {
-            get 
-            {
-                using (var writer = new System.IO.MemoryStream())
-                {
-                    var ser = new System.Xml.Serialization.XmlSerializer(typeof(GtdViewModel));
-                    ser.Serialize(writer, this);
-                    writer.Position = 0;
-                    return writer.ToArray();
-                }
-            }
-            set 
-            {
-                using (var reader = new System.IO.MemoryStream(value))
-                {
-                    XmlSerializer ser = new XmlSerializer(typeof(GtdViewModel));
-                    var model = (GtdViewModel)ser.Deserialize(reader);
-                    Notes = model.Notes;
-                }
-            }
-        }*/
-
 
         private ObservableCollection<TextNoteModel> _notes;
         public ObservableCollection<TextNoteModel> Notes
@@ -122,6 +99,9 @@ namespace MyToDoList.Models
                 throw new Exception("Could not deserialize file. Probably file is corrupted.", ex);
             }
 
+            model.X = Settings.Default.Left;
+            model.Y = Settings.Default.Top;
+
             return model;
         }
 
@@ -132,6 +112,10 @@ namespace MyToDoList.Models
                 var ser = new System.Xml.Serialization.XmlSerializer(typeof(MainWindowViewModel));
                 ser.Serialize(writer, this);
             }
+
+            Settings.Default.Left = this.X;
+            Settings.Default.Top = this.Y;
+            Settings.Default.Save();
         }
 
         #endregion
